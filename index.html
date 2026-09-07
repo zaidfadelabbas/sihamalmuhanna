@@ -8,80 +8,57 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        
         body { background-color: #d1d5db; display: flex; justify-content: center; }
-
-        #app-wrapper {
-            width: 100%; max-width: 450px; background-color: #f4f6f9; min-height: 100vh;
-            position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.15); overflow-x: hidden;
-        }
-
-        #splash-screen {
-            position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; height: 100vh;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: #d4af37; z-index: 9999; transition: opacity 0.8s ease-out;
-        }
-        .profile-img-container {
-            width: 130px; height: 130px; border-radius: 50%; border: 4px solid #d4af37;
-            overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); background-color: #fff;
-        }
+        #app-wrapper { width: 100%; max-width: 450px; background-color: #f4f6f9; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.15); overflow-x: hidden; }
+        #splash-screen { position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; height: 100vh; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #d4af37; z-index: 9999; transition: opacity 0.8s ease-out; }
+        .profile-img-container { width: 130px; height: 130px; border-radius: 50%; border: 4px solid #d4af37; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); background-color: #fff; }
         .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
         .splash-title { font-size: 22px; font-weight: 900; text-align: center; }
         .splash-subtitle { font-size: 15px; color: #f1f1f1; margin-top: 5px; text-align: center; }
-
         #main-app-container { display: none; opacity: 0; transition: opacity 0.5s ease-in; display: flex; flex-direction: column; min-height: 100vh; }
-        
         header { background-color: #1a2a3a; color: #d4af37; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); width: 100%; max-width: 450px; margin: 0 auto; }
         header h1 { font-size: 17px; font-weight: 900; }
-
         .ticker-wrap { background-color: #d4af37; color: #1a2a3a; padding: 5px 0; overflow: hidden; font-weight: 700; font-size: 13px; max-width: 450px; margin: 0 auto; width: 100%; border-bottom: 2px solid #1a2a3a; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
         .content-area { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 80px; }
-        
         .tab-section { display: none; animation: fadeIn 0.3s ease; }
         .tab-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .section-title { color: #1a2a3a; font-size: 18px; margin-bottom: 15px; border-bottom: 2px solid #d4af37; display: inline-block; padding-bottom: 5px; font-weight: 900; }
-
-        .news-card {
-            background-color: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 5px solid #d4af37; cursor: pointer; transition: transform 0.2s;
-        }
+        
+        /* تصميم كارت الأخبار الجديد والصور */
+        .news-card { background-color: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 5px solid #d4af37; cursor: pointer; transition: transform 0.2s; }
         .news-card:active { transform: scale(0.98); }
+        .news-img-thumb { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; display: none; }
         .news-card h3 { font-size: 15px; color: #1a2a3a; margin-bottom: 5px; }
         .news-card p.date { font-size: 11px; color: #777; margin-bottom: 8px; }
         .news-card p.snippet { font-size: 13px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .read-more { font-size: 12px; color: #d4af37; font-weight: bold; margin-top: 10px; display: inline-block; }
+        .loading-news { text-align: center; padding: 20px; font-weight: bold; color: #777; font-size: 14px; }
 
-        #news-modal {
-            display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; height: 100%;
-            background-color: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 20px;
-        }
-        .modal-content { background-color: #fff; width: 100%; border-radius: 15px; padding: 20px; position: relative; max-height: 80vh; overflow-y: auto; direction: rtl; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* تصميم النافذة المنبثقة للأخبار */
+        #news-modal { display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background-color: #fff; width: 100%; border-radius: 15px; padding: 20px; position: relative; max-height: 85vh; overflow-y: auto; direction: rtl; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .close-btn { position: absolute; top: 15px; left: 15px; font-size: 24px; font-weight: bold; color: #333; cursor: pointer; background: #eee; width: 30px; height: 30px; border-radius: 50%; text-align: center; line-height: 30px; }
+        #modal-img { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; }
         #modal-title { font-size: 17px; color: #1a2a3a; margin-bottom: 10px; padding-left: 30px; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
         #modal-date { font-size: 12px; color: #777; margin-bottom: 15px; }
         #modal-body { font-size: 14px; color: #444; line-height: 1.8; }
 
+        /* باقي الأقسام */
         .card { background-color: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 5px solid #1a2a3a; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1a2a3a; font-size: 13px; }
         .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; background-color: #f9f9f9; }
         .form-control:focus { outline: none; border-color: #d4af37; background-color: #fff; }
         .file-upload-input { padding: 8px !important; background-color: #fff !important; border: 1px dashed #aaa !important; cursor: pointer; }
-        
         .submit-btn { width: 100%; background-color: #1a2a3a; color: #d4af37; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .submit-btn:disabled { background-color: #555; cursor: not-allowed; }
-        
         .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .social-btn { display: flex; align-items: center; justify-content: center; padding: 12px; border-radius: 12px; color: #fff; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .fb { background-color: #1877F2; } .insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .tg { background-color: #0088cc; } .yt { background-color: #FF0000; }
-
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; background-color: #1a2a3a; display: flex; justify-content: space-around; padding: 8px 0; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); border-top: 3px solid #d4af37; }
         .nav-item { color: #88929b; text-align: center; cursor: pointer; font-size: 12px; font-weight: 700; flex: 1; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .nav-icon { font-size: 18px; margin-bottom: 2px; }
@@ -101,7 +78,6 @@
     </div>
 
     <div id="main-app-container">
-        
         <header>
             <h1>مكتب النائب سهام منعم المحنة</h1>
         </header>
@@ -116,18 +92,9 @@
             <div id="news" class="tab-section active">
                 <h2 class="section-title">الأخبار والنشاطات</h2>
                 
-                <div class="news-card" onclick="openNews('حضور اجتماعات لجنة التربية النيابية', '📅 7 أيلول 2026', 'شاركت النائب سهام منعم المحنة في الاجتماع الدوري للجنة التربية النيابية لمناقشة التعديلات المقترحة على المناهج الدراسية ودعم الكوادر التعليمية في عموم البلاد. وتم التأكيد على ضرورة توفير بيئة دراسية ملائمة للطلبة في كافة المحافظات.')">
-                    <h3>حضور اجتماعات لجنة التربية النيابية</h3>
-                    <p class="date">📅 7 أيلول 2026</p>
-                    <p class="snippet">شاركت النائب سهام منعم المحنة في الاجتماع الدوري للجنة...</p>
-                    <span class="read-more">اقرأ التفاصيل 👈</span>
-                </div>
-
-                <div class="news-card" onclick="openNews('استقبال المواطنين في مكتب النجف الأشرف', '📅 5 أيلول 2026', 'استقبلت النائب عدداً من المواطنين الكرام في مكتب النجف الأشرف للاستماع إلى مطالبهم ومناشداتهم، والعمل على تذليل العقبات بالتعاون مع الجهات التنفيذية والوزارات المعنية لضمان حقوق المواطن.')">
-                    <h3>استقبال المواطنين في مكتب النجف الأشرف</h3>
-                    <p class="date">📅 5 أيلول 2026</p>
-                    <p class="snippet">استقبلت النائب عدداً من المواطنين الكرام للاستماع إلى مطالبهم...</p>
-                    <span class="read-more">اقرأ التفاصيل 👈</span>
+                <!-- الحاوية التي ستظهر فيها الأخبار من جوجل شيت -->
+                <div id="news-container">
+                    <div class="loading-news">⏳ جاري تحميل الأخبار...</div>
                 </div>
             </div>
 
@@ -136,46 +103,19 @@
                 <h2 class="section-title">استمارة الطلبات والمناشدات</h2>
                 <div class="card">
                     <form id="requestForm">
-                        <div class="form-group">
-                            <label>الاسم الرباعي واللقب</label>
-                            <input type="text" id="reqName" class="form-control" placeholder="اكتب اسمك الكامل هنا..." required>
-                        </div>
-                        <div class="form-group">
-                            <label>رقم الهاتف</label>
-                            <input type="tel" id="reqPhone" class="form-control" placeholder="مثال: 07800000000" required>
-                        </div>
+                        <div class="form-group"><label>الاسم الرباعي واللقب</label><input type="text" id="reqName" class="form-control" placeholder="اكتب اسمك الكامل هنا..." required></div>
+                        <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="reqPhone" class="form-control" placeholder="مثال: 07800000000" required></div>
                         <div class="form-group">
                             <label>المحافظة</label>
                             <select id="reqGov" class="form-control" required>
                                 <option value="" disabled selected>اختر المحافظة...</option>
                                 <option value="النجف الأشرف">النجف الأشرف</option>
                                 <option value="بغداد">بغداد</option>
-                                <option value="البصرة">البصرة</option>
-                                <option value="نينوى">نينوى</option>
-                                <option value="أربيل">أربيل</option>
-                                <option value="كربلاء المقدسة">كربلاء المقدسة</option>
-                                <option value="كركوك">كركوك</option>
-                                <option value="الأنبار">الأنبار</option>
-                                <option value="ديالى">ديالى</option>
-                                <option value="ذي قار">ذي قار</option>
-                                <option value="بابل">بابل</option>
-                                <option value="ميسان">ميسان</option>
-                                <option value="واسط">واسط</option>
-                                <option value="صلاح الدين">صلاح الدين</option>
-                                <option value="السليمانية">السليمانية</option>
-                                <option value="دهوك">دهوك</option>
-                                <option value="الديوانية">الديوانية</option>
-                                <option value="حلبجة">حلبجة</option>
+                                <option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="كربلاء المقدسة">كربلاء المقدسة</option><option value="كركوك">كركوك</option><option value="الأنبار">الأنبار</option><option value="ديالى">ديالى</option><option value="ذي قار">ذي قار</option><option value="بابل">بابل</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="صلاح الدين">صلاح الدين</option><option value="السليمانية">السليمانية</option><option value="دهوك">دهوك</option><option value="الديوانية">الديوانية</option><option value="حلبجة">حلبجة</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>تفاصيل الطلب</label>
-                            <textarea id="reqDetails" class="form-control" rows="4" placeholder="اكتب تفاصيل طلبك أو مناشدتك بدقة..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>إرفاق صورة أو مستند (اختياري)</label>
-                            <input type="file" id="reqFile" class="form-control file-upload-input" accept="image/*,.pdf,.doc,.docx">
-                        </div>
+                        <div class="form-group"><label>تفاصيل الطلب</label><textarea id="reqDetails" class="form-control" rows="4" placeholder="اكتب تفاصيل طلبك أو مناشدتك بدقة..." required></textarea></div>
+                        <div class="form-group"><label>إرفاق صورة أو مستند (اختياري)</label><input type="file" id="reqFile" class="form-control file-upload-input" accept="image/*,.pdf,.doc,.docx"></div>
                         <button type="submit" id="submitBtn" class="submit-btn">إرسال الطلب</button>
                     </form>
                 </div>
@@ -187,20 +127,9 @@
                 <div class="card">
                     <h3 style="color: #1a2a3a; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom:15px;">النائب سهام منعم المحنة</h3>
                     <p style="text-align: center; font-weight: 700; color: #d4af37; margin-bottom: 20px;">عضو مجلس النواب العراقي<br>لجنة التربية النيابية</p>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <h4 style="color:#1a2a3a; font-size: 15px;">📍 مكتب المناذرة</h4>
-                        <p style="font-size: 14px; color:#555;">العنوان: شارع المستشفى</p>
-                        <p style="font-size: 13px; color:#d4af37; font-weight: bold;">أيام التواجد: الجمعة، الاثنين، والأربعاء (عصراً)</p>
-                    </div>
-                    
+                    <div style="margin-bottom: 15px;"><h4 style="color:#1a2a3a; font-size: 15px;">📍 مكتب المناذرة</h4><p style="font-size: 14px; color:#555;">العنوان: شارع المستشفى</p><p style="font-size: 13px; color:#d4af37; font-weight: bold;">أيام التواجد: الجمعة، الاثنين، والأربعاء (عصراً)</p></div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
-                    
-                    <div>
-                        <h4 style="color:#1a2a3a; font-size: 15px;">📍 مكتب النجف الأشرف</h4>
-                        <p style="font-size: 14px; color:#555;">العنوان: خلف محكمة النجف الأشرف</p>
-                        <p style="font-size: 13px; color:#d4af37; font-weight: bold;">أيام التواجد: السبت (عصراً)</p>
-                    </div>
+                    <div><h4 style="color:#1a2a3a; font-size: 15px;">📍 مكتب النجف الأشرف</h4><p style="font-size: 14px; color:#555;">العنوان: خلف محكمة النجف الأشرف</p><p style="font-size: 13px; color:#d4af37; font-weight: bold;">أيام التواجد: السبت (عصراً)</p></div>
                 </div>
             </div>
 
@@ -208,39 +137,26 @@
             <div id="contact" class="tab-section">
                 <h2 class="section-title">منصات التواصل الرسمية</h2>
                 <div class="social-grid">
-                    <a href="#" class="social-btn fb">فيسبوك</a>
-                    <a href="#" class="social-btn tg">تليكرام</a>
-                    <a href="#" class="social-btn insta">انستغرام</a>
-                    <a href="#" class="social-btn yt">يوتيوب</a>
+                    <a href="#" class="social-btn fb">فيسبوك</a><a href="#" class="social-btn tg">تليكرام</a><a href="#" class="social-btn insta">انستغرام</a><a href="#" class="social-btn yt">يوتيوب</a>
                 </div>
             </div>
 
         </div>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('news', this)">
-                <span class="nav-icon">📰</span>
-                <span>الأخبار</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('form', this)">
-                <span class="nav-icon">📝</span>
-                <span>الاستمارة</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('office', this)">
-                <span class="nav-icon">🏢</span>
-                <span>المكتب</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('contact', this)">
-                <span class="nav-icon">🌐</span>
-                <span>تواصل</span>
-            </div>
+            <div class="nav-item active" onclick="switchTab('news', this)"><span class="nav-icon">📰</span><span>الأخبار</span></div>
+            <div class="nav-item" onclick="switchTab('form', this)"><span class="nav-icon">📝</span><span>الاستمارة</span></div>
+            <div class="nav-item" onclick="switchTab('office', this)"><span class="nav-icon">🏢</span><span>المكتب</span></div>
+            <div class="nav-item" onclick="switchTab('contact', this)"><span class="nav-icon">🌐</span><span>تواصل</span></div>
         </nav>
     </div>
 </div>
 
+    <!-- نافذة قراءة الخبر (تم تحديثها لتشمل صورة) -->
     <div id="news-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeNews()">&times;</span>
+            <img id="modal-img" src="" alt="صورة الخبر">
             <h2 id="modal-title">عنوان الخبر</h2>
             <p id="modal-date">التاريخ</p>
             <p id="modal-body">تفاصيل الخبر تظهر هنا...</p>
@@ -248,68 +164,104 @@
     </div>
 
     <script>
-        // إخفاء شاشة الترحيب
+        const webhookUrl = "https://script.google.com/macros/s/AKfycbzfkgJu3eJlZYlatKmQID16_7iR4GWIjjRlNbq5zKqd5Ud8WN0X_gNMIalwJ6_0E55ZEw/exec";
+
+        // إخفاء شاشة الترحيب وجلب الأخبار
         window.addEventListener('load', function() {
             setTimeout(function() {
-                const splash = document.getElementById('splash-screen');
-                const appContainer = document.getElementById('main-app-container');
-                
-                splash.style.opacity = '0';
+                document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(function() {
-                    splash.style.display = 'none';
-                    appContainer.style.display = 'flex';
-                    setTimeout(() => appContainer.style.opacity = '1', 50);
+                    document.getElementById('splash-screen').style.display = 'none';
+                    const app = document.getElementById('main-app-container');
+                    app.style.display = 'flex';
+                    setTimeout(() => app.style.opacity = '1', 50);
                 }, 800);
             }, 3000);
+            
+            fetchNews(); // جلب الأخبار تلقائياً عند فتح التطبيق
         });
 
-        // التنقل بين الأقسام
+        // جلب الأخبار من جدول جوجل
+        async function fetchNews() {
+            const container = document.getElementById('news-container');
+            try {
+                const response = await fetch(webhookUrl);
+                const newsData = await response.json();
+                
+                container.innerHTML = ""; // تفريغ رسالة التحميل
+                
+                if(newsData.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:#777;">لا توجد أخبار حالياً.</p>';
+                    return;
+                }
+
+                newsData.forEach(news => {
+                    const imgTag = news.image ? `<img src="${news.image}" class="news-img-thumb" style="display:block;">` : '';
+                    
+                    // تحويل البيانات لنصوص آمنة لتمريرها للدالة
+                    const safeTitle = news.title.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                    const safeDate = news.date.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                    const safeDetails = news.details.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                    const safeImage = news.image ? news.image : '';
+
+                    const card = `
+                        <div class="news-card" onclick="openNews('${safeTitle}', '${safeDate}', '${safeDetails}', '${safeImage}')">
+                            ${imgTag}
+                            <h3>${news.title}</h3>
+                            <p class="date">${news.date}</p>
+                            <p class="snippet">${news.details}</p>
+                            <span class="read-more">اقرأ التفاصيل 👈</span>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            } catch (error) {
+                container.innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الأخبار. يرجى التأكد من اتصال الإنترنت.</p>';
+            }
+        }
+
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-section').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
             document.querySelector('.content-area').scrollTo(0, 0); 
         }
 
-        // نافذة الأخبار
-        function openNews(title, date, body) {
+        function openNews(title, date, body, image) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-date').innerText = date;
             document.getElementById('modal-body').innerText = body;
+            
+            const modalImg = document.getElementById('modal-img');
+            if(image && image.trim() !== '') {
+                modalImg.src = image;
+                modalImg.style.display = 'block';
+            } else {
+                modalImg.style.display = 'none';
+                modalImg.src = '';
+            }
+            
             document.getElementById('news-modal').style.display = 'flex';
         }
-        function closeNews() {
-            document.getElementById('news-modal').style.display = 'none';
-        }
+        
+        function closeNews() { document.getElementById('news-modal').style.display = 'none'; }
 
-        // دالة تحويل الملف إلى Base64
         const getBase64 = (file) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
         });
 
-        // إرسال البيانات إلى جدول جوجل (Webhook)
         document.getElementById('requestForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const submitBtn = document.getElementById('submitBtn');
             const originalBtnText = submitBtn.innerText;
-            submitBtn.innerText = 'جاري الإرسال... ⏳';
-            submitBtn.disabled = true;
+            submitBtn.innerText = 'جاري الإرسال... ⏳'; submitBtn.disabled = true;
 
             const fileInput = document.getElementById('reqFile');
             let fileUrl = "";
-
             if (fileInput.files.length > 0) {
-                try {
-                    fileUrl = await getBase64(fileInput.files[0]);
-                } catch (error) {
-                    console.error("خطأ في قراءة الملف");
-                }
+                try { fileUrl = await getBase64(fileInput.files[0]); } catch (error) { console.error("خطأ"); }
             }
 
             const payload = {
@@ -320,24 +272,16 @@
                 fileUrl: fileUrl
             };
 
-            const webhookUrl = "https://script.google.com/macros/s/AKfycbzfkgJu3eJlZYlatKmQID16_7iR4GWIjjRlNbq5zKqd5Ud8WN0X_gNMIalwJ6_0E55ZEw/exec";
-
             try {
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+                await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
                 alert('تم إرسال مناشدتك بنجاح! سيتم مراجعتها من قبل مكتب النائب سهام منعم المحنة.');
                 this.reset();
             } catch (error) {
-                alert('حدث خطأ أثناء الإرسال، يرجى التأكد من اتصالك بالإنترنت والمحاولة مرة أخرى.');
+                alert('حدث خطأ أثناء الإرسال.');
             } finally {
-                submitBtn.innerText = originalBtnText;
-                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText; submitBtn.disabled = false;
             }
         });
     </script>
-
 </body>
 </html>
