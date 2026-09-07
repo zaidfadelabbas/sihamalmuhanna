@@ -11,8 +11,23 @@
         body { background-color: #d1d5db; display: flex; justify-content: center; }
         #app-wrapper { width: 100%; max-width: 450px; background-color: #f4f6f9; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.15); overflow-x: hidden; }
         #splash-screen { position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 450px; height: 100vh; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #d4af37; z-index: 9999; transition: opacity 0.8s ease-out; }
-        .profile-img-container { width: 130px; height: 130px; border-radius: 50%; border: 4px solid #d4af37; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); background-color: #fff; }
-        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-img-container {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 15px auto;
+    border: 3px solid #d4af37;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+        .profile-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
         .splash-title { font-size: 22px; font-weight: 900; text-align: center; }
         .splash-subtitle { font-size: 15px; color: #f1f1f1; margin-top: 5px; text-align: center; }
         #main-app-container { display: none; opacity: 0; transition: opacity 0.5s ease-in; display: flex; flex-direction: column; min-height: 100vh; }
@@ -163,20 +178,18 @@
         </div>
     </div>
 
-    <script>
-        const webhookUrl = "https://script.google.com/macros/s/AKfycbzfkgJu3eJlZYlatKmQID16_7iR4GWIjjRlNbq5zKqd5Ud8WN0X_gNMIalwJ6_0E55ZEw/exec";
-
-        // إخفاء شاشة الترحيب وجلب الأخبار
-        window.addEventListener('load', function() {
+   <script>
+    // إخفاء شاشة الترحيب إجبارياً بعد 2.5 ثانية حتى لو كان النت ضعيفاً
+    setTimeout(function() {
+        var splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.style.opacity = '0';
             setTimeout(function() {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(function() {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    const app = document.getElementById('main-app-container');
-                    app.style.display = 'flex';
-                    setTimeout(() => app.style.opacity = '1', 50);
-                }, 800);
-            }, 3000);
+                splash.style.display = 'none';
+            }, 500); // وقت التلاشي
+        }
+    }, 2500); // 2500 تعني ثانيتين ونصف
+</script>
             
             fetchNews(); // جلب الأخبار تلقائياً عند فتح التطبيق
         });
