@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مكتب النائب سهام منعم المحنة</title>
-    <!-- استدعاء خط تجوال الرسمي -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- استدعاء أيقونات FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary-color: #1a2a3a; /* كحلي */
-            --secondary-color: #d4af37; /* ذهبي */
+            --primary-color: #1a2a3a; 
+            --secondary-color: #d4af37; 
             --bg-color: #f4f4f9;
             --text-color: #333;
         }
@@ -20,7 +18,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* 1. شاشة الترحيب الاحترافية */
+        /* شاشة الترحيب */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--primary-color), #0f1922);
@@ -36,90 +34,101 @@
         .splash-title { color: white; font-size: 26px; font-weight: 800; text-align: center; line-height: 1.4; margin-bottom: 5px; }
         .splash-subtitle { color: var(--secondary-color); font-size: 16px; font-weight: 500; }
 
-        /* 2. الشريط الإخباري (من اليسار لليمين وبطيء) */
+        /* الشريط الإخباري (مبطأ ولا يختفي) */
         .ticker-wrap {
             background-color: var(--secondary-color); color: var(--primary-color);
             padding: 8px 0; overflow: hidden; font-weight: 700; font-size: 14px;
-            width: 100%; border-bottom: 3px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%; border-bottom: 3px solid var(--primary-color);
         }
         .ticker-move {
             display: inline-block; white-space: nowrap; padding-right: 100%;
-            animation: ticker-rtl 25s linear infinite; /* 25 ثانية ليكون بطيئاً ومريحاً للقراءة */
+            animation: ticker-rtl 35s linear infinite; /* زيادة الوقت ليكون أبطأ */
         }
         @keyframes ticker-rtl {
-            0% { transform: translateX(-100%); } /* يبدأ من اليسار */
-            100% { transform: translateX(100%); } /* ينتهي باليمين */
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100%); } 
         }
 
-        /* 3. الهيدر (رأس الصفحة) */
+        /* رأس الصفحة */
         header { background-color: var(--primary-color); padding: 15px 20px; text-align: center; color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         header h2 { font-size: 20px; color: var(--secondary-color); }
         header p { font-size: 12px; margin-top: 3px; opacity: 0.9; }
 
-        /* 4. أزرار التنقل السفلية */
+        /* أزرار التنقل السفلية */
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; background-color: white;
             display: flex; justify-content: space-around; padding: 10px 0;
             box-shadow: 0 -2px 15px rgba(0,0,0,0.1); z-index: 1000; border-top: 1px solid #ddd;
         }
         .nav-btn {
-            background: none; border: none; font-size: 13px; font-weight: 700; color: #777;
-            display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: 0.3s;
+            background: none; border: none; font-size: 11px; font-weight: 700; color: #777;
+            display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: 0.3s;
         }
         .nav-btn.active { color: var(--primary-color); }
-        .nav-btn i { font-size: 22px; color: #777; transition: 0.3s; }
+        .nav-btn i { font-size: 20px; color: #777; transition: 0.3s; }
         .nav-btn.active i { color: var(--secondary-color); }
 
-        /* حاويات الأقسام */
         .section-container { display: none; padding: 20px 15px 80px 15px; animation: fadeIn 0.4s ease; }
         .section-container.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 5. تصميم الأخبار */
+        /* الأخبار والاقتباس */
         .news-card {
             background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-right: 4px solid var(--secondary-color);
         }
-        .news-card img { width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 200px; object-fit: cover; }
-        .news-title { font-size: 18px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
+        .news-img { width: 100%; border-radius: 8px; margin-bottom: 10px; height: 180px; object-fit: cover; }
+        .news-title { font-size: 17px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
         .news-date { font-size: 12px; color: #888; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .news-details { font-size: 14px; color: #555; line-height: 1.6; }
+        .news-snippet { font-size: 14px; color: #555; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .read-more-btn { background: none; border: none; color: var(--secondary-color); font-weight: 700; font-size: 14px; margin-top: 8px; cursor: pointer; padding: 0; }
 
-        /* 6. تصميم الاستمارة */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--primary-color); }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
-        .form-control:focus { border-color: var(--secondary-color); box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
-        .submit-btn {
-            width: 100%; background-color: var(--primary-color); color: white; border: none;
-            padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
-        .submit-btn:hover { background-color: var(--secondary-color); color: var(--primary-color); }
-
-        /* 7. واجهة النجاح للاستمارة (Popup) */
-        #success-modal {
+        /* نافذة قراءة الخبر كاملاً */
+        #news-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; padding: 15px;
         }
-        .success-box { background: white; width: 85%; border-radius: 15px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .success-icon { font-size: 60px; color: #28a745; margin-bottom: 15px; }
-        .success-title { font-size: 22px; font-weight: 800; color: var(--primary-color); margin-bottom: 10px; }
-        .success-text { font-size: 15px; color: #666; margin-bottom: 20px; line-height: 1.5; }
-        .close-success-btn { background-color: var(--primary-color); color: white; border: none; padding: 10px 30px; border-radius: 25px; font-weight: 700; cursor: pointer; }
-        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .news-modal-content {
+            background: white; width: 100%; max-width: 400px; max-height: 90vh; border-radius: 15px;
+            overflow-y: auto; padding: 20px; position: relative; animation: popIn 0.3s ease;
+        }
+        .close-news-btn {
+            position: absolute; top: 15px; left: 15px; background: #eee; border: none;
+            width: 35px; height: 35px; border-radius: 50%; font-size: 18px; cursor: pointer; color: #333;
+        }
+        #modal-img { width: 100%; border-radius: 10px; margin-bottom: 15px; max-height: 250px; object-fit: cover; display: none; }
+        #modal-title { font-size: 20px; font-weight: 800; color: var(--primary-color); margin-bottom: 10px; }
+        #modal-date { font-size: 13px; color: #888; margin-bottom: 15px; }
+        #modal-details { font-size: 15px; color: #444; line-height: 1.8; }
 
-        /* 8. تصميم منصات التواصل */
+        /* الاستمارة ورفع الملفات */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--primary-color); font-size: 14px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+        .file-upload-wrapper { border: 2px dashed #ccc; padding: 15px; text-align: center; border-radius: 8px; background: #fafafa; position: relative; }
+        .file-upload-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-upload-wrapper i { font-size: 24px; color: var(--secondary-color); margin-bottom: 8px; }
+        .submit-btn { width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+
+        /* المكتب */
+        .office-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; border-right: 4px solid var(--secondary-color); }
+        .office-card h4 { color: var(--primary-color); margin-bottom: 12px; font-size: 18px; }
+        .office-card p { font-size: 14px; color: #555; margin-bottom: 10px; }
+        .office-card i { color: var(--secondary-color); margin-left: 8px; width: 20px; text-align: center; }
+
+        /* التواصل (تم التعديل لتطبيق Kodular) */
         .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .social-btn {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-            padding: 20px; border-radius: 12px; color: white; text-decoration: none; font-weight: 700; font-size: 16px;
-            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; border-radius: 12px; color: white; text-decoration: none; font-weight: 700; font-size: 16px; border: none; cursor: pointer; }
         .social-btn i { font-size: 30px; }
         .fb-btn { background: linear-gradient(45deg, #1877F2, #0e5a20); }
         .ig-btn { background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040); }
         .tg-btn { background: linear-gradient(45deg, #0088cc, #005580); }
         .yt-btn { background: linear-gradient(45deg, #FF0000, #990000); }
+
+        /* النوافذ المنبثقة */
+        #success-modal, #loading-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center; }
+        .popup-box { background: white; width: 85%; border-radius: 15px; padding: 30px 20px; text-align: center; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -133,9 +142,9 @@
         <p class="splash-subtitle">عضو مجلس النواب العراقي</p>
     </div>
 
-    <!-- الشريط الإخباري -->
+    <!-- الشريط الإخباري (نص افتراضي لمنع الفراغ) -->
     <div class="ticker-wrap">
-        <div class="ticker-move" id="news-ticker">جاري تحميل أحدث الأخبار...</div>
+        <div class="ticker-move" id="news-ticker"> 🔹 مرحباً بكم في التطبيق الرسمي للمكتب الإعلامي للنائب سهام منعم المحنة &nbsp;&nbsp;&nbsp;&nbsp; 🔹 جاري مزامنة أحدث الأخبار...</div>
     </div>
 
     <!-- رأس الصفحة -->
@@ -144,7 +153,6 @@
         <p>المكتب الإعلامي الرسمي</p>
     </header>
 
-    <!-- الأقسام -->
     <!-- 1. قسم الأخبار -->
     <div id="news-section" class="section-container active">
         <div id="news-container">
@@ -172,66 +180,96 @@
                 <label>تفاصيل الطلب أو المناشدة</label>
                 <textarea class="form-control" name="request" rows="5" required placeholder="اكتب تفاصيل مناشدتك بوضوح..."></textarea>
             </div>
+            <div class="form-group">
+                <label>إرفاق صورة أو ملف (اختياري)</label>
+                <div class="file-upload-wrapper">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p id="file-name-display">اضغط هنا لاختيار ملف</p>
+                    <input type="file" id="file-upload" accept="image/*,application/pdf">
+                </div>
+            </div>
             <button type="submit" class="submit-btn" id="submit-btn"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
         </form>
     </div>
 
-    <!-- 3. قسم التواصل -->
+    <!-- 3. قسم المكتب -->
+    <div id="office-section" class="section-container">
+        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; margin-bottom: 20px;">مكاتبنا</h3>
+        <div class="office-card">
+            <h4>المكتب الرئيسي</h4>
+            <p><i class="fas fa-map-marker-alt"></i> العنوان: النجف الأشرف - قضاء المناذرة</p>
+            <p><i class="fas fa-phone"></i> الهاتف: 07800000000</p>
+            <p><i class="fas fa-envelope"></i> البريد: info@siham.iq</p>
+        </div>
+        <div class="office-card">
+            <h4>أوقات الدوام الرسمي</h4>
+            <p><i class="fas fa-clock"></i> الأحد إلى الخميس</p>
+            <p><i class="fas fa-sun"></i> 8:00 صباحاً - 2:00 ظهراً</p>
+        </div>
+    </div>
+
+    <!-- 4. قسم التواصل -->
     <div id="social-section" class="section-container">
         <h3 style="color: var(--primary-color); margin-bottom: 10px; text-align: center;">تواصل معنا</h3>
-        <p style="text-align: center; color: #666; font-size: 14px;">تابع المنصات الرسمية للنائب سهام منعم المحنة</p>
-        
+        <p style="text-align: center; color: #666; font-size: 14px;">تابع المنصات الرسمية للنائب</p>
         <div class="social-grid">
-            <a href="https://www.facebook.com/sihamalmuhanna" target="_blank" class="social-btn fb-btn">
-                <i class="fab fa-facebook-f"></i> فيسبوك
-            </a>
-            <a href="https://t.me/sihamalmuhanna" target="_blank" class="social-btn tg-btn">
-                <i class="fab fa-telegram-plane"></i> تليكرام
-            </a>
-            <a href="https://www.instagram.com/sihamalmuhanna/" target="_blank" class="social-btn ig-btn">
-                <i class="fab fa-instagram"></i> انستغرام
-            </a>
-            <a href="https://www.youtube.com/@sihamalmuhanna" target="_blank" class="social-btn yt-btn">
-                <i class="fab fa-youtube"></i> يوتيوب
-            </a>
+            <button onclick="openExternalApp('https://www.facebook.com/sihamalmuhanna')" class="social-btn fb-btn"><i class="fab fa-facebook-f"></i> فيسبوك</button>
+            <button onclick="openExternalApp('https://t.me/sihamalmuhanna')" class="social-btn tg-btn"><i class="fab fa-telegram-plane"></i> تليكرام</button>
+            <button onclick="openExternalApp('https://www.instagram.com/sihamalmuhanna/')" class="social-btn ig-btn"><i class="fab fa-instagram"></i> انستغرام</button>
+            <button onclick="openExternalApp('https://www.youtube.com/@sihamalmuhanna')" class="social-btn yt-btn"><i class="fab fa-youtube"></i> يوتيوب</button>
         </div>
     </div>
 
     <!-- شريط التنقل السفلي -->
     <nav class="nav-bar">
-        <button class="nav-btn active" onclick="switchTab('news-section', this)">
-            <i class="fas fa-newspaper"></i> الأخبار
-        </button>
-        <button class="nav-btn" onclick="switchTab('form-section', this)">
-            <i class="fas fa-file-signature"></i> الاستمارة
-        </button>
-        <button class="nav-btn" onclick="switchTab('social-section', this)">
-            <i class="fas fa-users"></i> التواصل
-        </button>
+        <button class="nav-btn active" onclick="switchTab('news-section', this)"><i class="fas fa-newspaper"></i> الأخبار</button>
+        <button class="nav-btn" onclick="switchTab('form-section', this)"><i class="fas fa-file-signature"></i> الاستمارة</button>
+        <button class="nav-btn" onclick="switchTab('office-section', this)"><i class="fas fa-building"></i> المكتب</button>
+        <button class="nav-btn" onclick="switchTab('social-section', this)"><i class="fas fa-users"></i> التواصل</button>
     </nav>
 
-    <!-- نافذة النجاح المنبثقة -->
+    <!-- نافذة قراءة الخبر -->
+    <div id="news-modal">
+        <div class="news-modal-content">
+            <button class="close-news-btn" onclick="closeNewsModal()"><i class="fas fa-times"></i></button>
+            <img id="modal-img" src="" alt="صورة الخبر">
+            <h2 id="modal-title"></h2>
+            <div id="modal-date"><i class="far fa-calendar-alt"></i> <span id="modal-date-text"></span></div>
+            <div id="modal-details"></div>
+        </div>
+    </div>
+
+    <!-- نافذة النجاح -->
     <div id="success-modal">
-        <div class="success-box">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h2 class="success-title">تم الإرسال بنجاح!</h2>
-            <p class="success-text">تم استلام طلبك من قبل المكتب الإعلامي للنائب وسيتم مراجعته بأقرب وقت.</p>
-            <button class="close-success-btn" onclick="closeSuccessModal()">حسناً</button>
+        <div class="popup-box">
+            <i class="fas fa-check-circle" style="font-size: 60px; color: #28a745; margin-bottom: 15px;"></i>
+            <h2 style="color: var(--primary-color); margin-bottom: 10px;">تم الإرسال بنجاح!</h2>
+            <p style="color: #666; margin-bottom: 20px;">تم استلام طلبك والمرفقات بنجاح، سيتم مراجعته بأقرب وقت.</p>
+            <button onclick="document.getElementById('success-modal').style.display='none'" style="background: var(--primary-color); color: white; border: none; padding: 10px 30px; border-radius: 25px; font-weight: 700;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل للملفات -->
+    <div id="loading-modal">
+        <div class="popup-box">
+            <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--secondary-color); margin-bottom: 15px;"></i>
+            <h3 style="color: var(--primary-color);">جاري رفع الملف وإرسال الطلب...</h3>
+            <p style="color: #666; font-size: 13px; mt-2">يرجى عدم إغلاق التطبيق</p>
         </div>
     </div>
 
     <script>
-        // الرابط الخاص بك
         const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzfkgJu3eJlZYlatKmQID16_7iR4GWIjjRlNbq5zKqd5Ud8WN0X_gNMIalwJ6_0E55ZEw/exec";
+        let globalNewsData = [];
 
-        // إخفاء شاشة الترحيب بسلاسة بعد 2.5 ثانية
+        // إخفاء الترحيب 
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
             setTimeout(() => { splash.style.display = 'none'; }, 500);
         }, 2500);
 
-        // التنقل بين الأقسام
+        // التنقل 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.section-container').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -239,75 +277,94 @@
             btn.classList.add('active');
         }
 
-        // جلب الأخبار
+        // جلب الأخبار وعرض المقتطف
         fetch(WEBHOOK_URL)
             .then(res => res.json())
             .then(data => {
+                globalNewsData = data;
                 let html = '';
                 let tickerText = '';
                 if(data.length > 0){
-                    data.forEach(item => {
+                    data.forEach((item, index) => {
                         tickerText += ` 🔹 ${item.title} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `;
                         html += `
                         <div class="news-card">
-                            ${item.image ? `<img src="${item.image}" alt="صورة الخبر">` : ''}
+                            ${item.image ? `<img src="${item.image}" class="news-img">` : ''}
                             <div class="news-title">${item.title}</div>
                             <div class="news-date"><i class="far fa-calendar-alt"></i> ${item.date}</div>
-                            <div class="news-details">${item.details.replace(/\n/g, '<br>')}</div>
+                            <div class="news-snippet">${item.details}</div>
+                            <button class="read-more-btn" onclick="openNewsModal(${index})">اقرأ المزيد <i class="fas fa-angle-double-left"></i></button>
                         </div>`;
                     });
                     document.getElementById('news-container').innerHTML = html;
                     document.getElementById('news-ticker').innerHTML = tickerText;
                 } else {
-                    document.getElementById('news-container').innerHTML = '<p style="text-align:center; padding:20px;">لا توجد أخبار حالياً.</p>';
                     document.getElementById('news-ticker').innerHTML = 'لا توجد أخبار حالياً.';
                 }
-            })
-            .catch(err => {
-                document.getElementById('news-container').innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في جلب الأخبار.</p>';
             });
 
-        // إرسال الاستمارة
-        const form = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('submit-btn');
-        
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-            submitBtn.disabled = true;
+        // فتح وإغلاق الخبر الكامل
+        function openNewsModal(index) {
+            const item = globalNewsData[index];
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-date-text').innerText = item.date;
+            document.getElementById('modal-details').innerHTML = item.details.replace(/\n/g, '<br>');
+            const imgEl = document.getElementById('modal-img');
+            if(item.image) { imgEl.src = item.image; imgEl.style.display = 'block'; } 
+            else { imgEl.style.display = 'none'; }
+            document.getElementById('news-modal').style.display = 'flex';
+        }
+        function closeNewsModal() { document.getElementById('news-modal').style.display = 'none'; }
 
-            const formData = new FormData(form);
-            const dataObj = {
-                name: formData.get('name'),
-                phone: formData.get('phone'),
-                gov: formData.get('gov'),
-                request: formData.get('request'),
-                fileUrl: ''
-            };
+        // فتح منصات التواصل عبر Kodular 
+        function openExternalApp(url) {
+            if (window.AppInventor) { window.AppInventor.setWebViewString(url); } 
+            else { window.open(url, '_blank'); }
+        }
 
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                body: JSON.stringify(dataObj)
-            })
-            .then(res => res.text())
-            .then(() => {
-                form.reset();
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال الطلب';
-                submitBtn.disabled = false;
-                // إظهار نافذة النجاح
-                document.getElementById('success-modal').style.display = 'flex';
-            })
-            .catch(err => {
-                alert("حدث خطأ في الإرسال، يرجى المحاولة لاحقاً.");
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال الطلب';
-                submitBtn.disabled = false;
-            });
+        // معالجة اختيار الملف
+        let fileBase64 = "";
+        let fileName = "";
+        let mimeType = "";
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('file-name-display').innerText = file.name;
+                fileName = file.name;
+                mimeType = file.type;
+                const reader = new FileReader();
+                reader.onload = function(readerEvt) {
+                    fileBase64 = btoa(readerEvt.target.result);
+                };
+                reader.readAsBinaryString(file);
+            }
         });
 
-        // إغلاق نافذة النجاح
-        function closeSuccessModal() {
-            document.getElementById('success-modal').style.display = 'none';
-        }
+        // إرسال الاستمارة
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('loading-modal').style.display = 'flex';
+            
+            const formData = new FormData(e.target);
+            const dataObj = {
+                name: formData.get('name'), phone: formData.get('phone'),
+                gov: formData.get('gov'), request: formData.get('request'),
+                fileBase64: fileBase64, fileName: fileName, mimeType: mimeType
+            };
+
+            fetch(WEBHOOK_URL, { method: 'POST', body: JSON.stringify(dataObj) })
+            .then(res => res.text())
+            .then(() => {
+                document.getElementById('loading-modal').style.display = 'none';
+                document.getElementById('success-modal').style.display = 'flex';
+                e.target.reset(); document.getElementById('file-name-display').innerText = 'اضغط هنا لاختيار ملف';
+                fileBase64 = ""; fileName = ""; mimeType = "";
+            })
+            .catch(() => {
+                document.getElementById('loading-modal').style.display = 'none';
+                alert("حدث خطأ في الإرسال، يرجى التحقق من الإنترنت.");
+            });
+        });
     </script>
 </body>
 </html>
